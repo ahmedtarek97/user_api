@@ -1,0 +1,27 @@
+{
+  "name": "valoro",
+  "version": "1.0.0",
+  "description": "a restful api ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedtarek97/user_api.git"
+  },
+  "keywords": [
+    "node",
+    "restful",
+    "api"
+  ],
+  "author": "Ahmed Tarek Hussien",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahmedtarek97/user_api/issues"
+  },
+  "homepage": "https://github.com/ahmedtarek97/user_api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
