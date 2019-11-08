@@ -1,6 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination:function(req, file, cb) {
+      cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+      cb(null,file.originalname);
+    }
+  });
+
+
+
+  const upload = multer({
+    storage:storage
+    
+  });
+
 const User = require('../models/user');
 //to handle the get requests
 router.get("/",(req,res,next)=>{
@@ -77,13 +95,13 @@ error:err
 //to handle post requsts
 
 
-router.post("/",(req,res,next)=>{
-
+router.post("/",upload.single('avatar'),(req,res,next)=>{
+console.log(req.file)
     
     const user = new User({
 
         _id:new mongoose.Types.ObjectId(),
-        username:req.body.userName,
+        username:req.body.username,
         email:req.body.email,
         password:req.body.password,
         firstName:req.body.firstName,
