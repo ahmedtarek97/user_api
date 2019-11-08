@@ -102,7 +102,7 @@ router.post("/",(req,res,next)=>{
             res.status(201).json({
     
     
-        message:'handling post requsts to /user',
+        message:'Added a user successfully',
         createdUser:user
     
     
