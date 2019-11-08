@@ -1,8 +1,18 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const userRoutes=require('./api/routes/user');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+
+const userRoutes=require('./api/routes/user');
+
+mongoose.connect('mongodb+srv://rest_api_user:'+process.env.MONGO_ATLAS_PW+'@cluster0-ulxyj.mongodb.net/test?retryWrites=true&w=majority'
+
+,{
+
+    useMongoClient:true
+});
 
 app.use(morgan('dev'));
 //extract data from the body of the requst and makes it easily readable

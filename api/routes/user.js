@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
+const mongoose = require('mongoose');
+const User = require('../models/user');
 //to handle the get requests
 router.get('/',(req,res,next)=>{
 
@@ -36,18 +37,34 @@ res.status(200).json({
 
 router.post('/',(req,res,next)=>{
 
-    const user ={
+    
+    const user = new User({
 
-        userName:req.body.userName,
+        _id:new mongoose.Types.ObjectId(),
+        username:req.body.userName,
         email:req.body.email,
         password:req.body.password,
         firstName:req.body.firstName,
-        lastName:req.body.lastName
-        
-    }
+        lastName:req.body.lastName,
+        avatar:req.body.avatar
+    
 
 
-    res.status(200).json({
+    });
+
+    user.save().then(result =>
+        {
+
+            console.log(result);
+
+
+
+
+        })
+           .catch(err => console.log(err) );
+
+
+    res.status(201).json({
     
     
         message:'handling post requsts to /user',
