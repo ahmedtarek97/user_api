@@ -5,17 +5,45 @@ const User = require('../models/user');
 //to handle the get requests
 router.get("/",(req,res,next)=>{
 
+User.find()
+.exec()
+.then(docs=>
+    {
+        console.log(docs);
+        if(docs.length >=0)
+        { 
+             res.status(200).json(docs);
+        
+        }
+        else{
+// if the database is empty
+            res.status(404).json({
+                
+                message:'No users found'
+            });
 
-res.status(200).json({
+
+        }
+      
 
 
-    message:'handling get requsts to /user'
 
+    })
+.catch(err=>{
+
+
+    console.log(err);
+
+res.status(500).json({
+
+error:err
 
 
 
 });
 
+
+});
 
 
 
@@ -151,7 +179,19 @@ router.get("/:userId",(req,res,next)=>{
     .then(doc=>{
 
         console.log(doc);
-        res.status(200).json(doc);
+        if(doc){
+
+            res.status(200).json(doc);
+
+
+
+        }
+        else
+        {
+            res.status(404).json({ message: "No valid entry found for provided ID" });
+
+        }
+     
 
 
     })
@@ -178,6 +218,61 @@ router.get("/:userId",(req,res,next)=>{
     );
     
     
+
+
+
+
+
+
+
+
+
+
+    router.delete("/:userId", (req, res, next) => {
+        const id = req.params.userId;
+        User.remove({ _id:id })
+          .exec()
+          .then(result => {
+            res.status(200).json(result);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
+      });
+
+
+
+
+
+
+
+
+
+
+// to make updates in the users that are in the database
+
+      router.patch("/:userId", (req, res, next) => {
+        const id = req.params.userId;
+        const updateOps = {}; //will contain the updated data
+        for (const ops of req.body) {
+          updateOps[ops.propName] = ops.value;
+        }
+        User.update({ _id:id }, { $set: updateOps })
+          .exec()
+          .then(result => {
+            console.log(result);
+            res.status(200).json(result);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
+      });
 
 
 
