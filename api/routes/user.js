@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 //to handle the get requests
-router.get('/',(req,res,next)=>{
+router.get("/",(req,res,next)=>{
 
 
 res.status(200).json({
@@ -32,10 +32,24 @@ res.status(200).json({
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //to handle post requsts
 
 
-router.post('/',(req,res,next)=>{
+router.post("/",(req,res,next)=>{
 
     
     const user = new User({
@@ -57,14 +71,7 @@ router.post('/',(req,res,next)=>{
 
             console.log(result);
 
-
-
-
-        })
-           .catch(err => console.log(err) );
-
-
-    res.status(201).json({
+            res.status(201).json({
     
     
         message:'handling post requsts to /user',
@@ -74,6 +81,28 @@ router.post('/',(req,res,next)=>{
     
     
     });
+    
+
+
+
+
+        })
+           .catch(err => {console.log(err)
+        
+        res.status(500).json({
+
+            error:err
+
+
+
+        })
+        
+        
+        
+        
+        } );
+
+
     
     
     
@@ -87,7 +116,77 @@ router.post('/',(req,res,next)=>{
     
     
     
-    )
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//to handle the get requests with a specific id
+router.get("/:userId",(req,res,next)=>{
+    const id = req.params.userId;
+
+    User.findById(id)
+    .exec()
+    .then(doc=>{
+
+        console.log(doc);
+        res.status(200).json(doc);
+
+
+    })
+    .catch(err =>{
+        console.log(err);
+    
+    res.status(500).json({error:err});
+    
+    
+    });
+
+   
+    
+    
+    
+    
+    }
+    
+    
+    
+    
+    
+    
+    );
+    
+    
+
+
+
+
+
+
+
+
+
 
 
     module.exports=router;
