@@ -36,11 +36,22 @@ res.status(200).json({
 
 router.post('/',(req,res,next)=>{
 
+    const user ={
+
+        userName:req.body.userName,
+        email:req.body.email,
+        password:req.body.password,
+        firstName:req.body.firstName,
+        lastName:req.body.lastName
+        
+    }
+
 
     res.status(200).json({
     
     
-        message:'handling post requsts to /user'
+        message:'handling post requsts to /user',
+        createdUser:user
     
     
     

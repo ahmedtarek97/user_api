@@ -2,9 +2,13 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const userRoutes=require('./api/routes/user');
-
+const bodyParser = require('body-parser');
 
 app.use(morgan('dev'));
+//extract data from the body of the requst and makes it easily readable
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
 
 app.use('/user',userRoutes);
 //requsts that was not handled by the userRoutes
