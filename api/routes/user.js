@@ -5,7 +5,7 @@ const multer = require('multer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const checkAuth = require('../middleware/check-auth');
-
+const uuidv4 =require('uuid/v4');
 const fileFilter = (req, file, cb) => {
     // reject a file
     if (file.mimetype === 'image/jpeg'||file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
@@ -110,6 +110,24 @@ error:err
 
 router.post("/",upload.single('avatar'),(req,res,next)=>{
 console.log(req.file)
+
+const pass = req.body.password;
+if(pass.length<6)
+{
+    return res.status(409).json({
+
+
+        message:'short password'
+
+
+
+    })
+
+
+
+}
+
+
     //check if email already exist
 User.find({email:req.body.email}).exec()
 .then(user =>{
@@ -157,7 +175,7 @@ User.find({email:req.body.email}).exec()
         
             const user = new User({
         
-                _id:new mongoose.Types.ObjectId(),
+                _id:uuidv4() ,
                 username:req.body.username,
                 email:req.body.email,
                 password: hash,
@@ -279,10 +297,10 @@ User.find({email:req.body.email}).exec()
 
 
 //to handle the get requests with a specific id
-router.get("/:userId",(req,res,next)=>{
-    const id = req.params.userId;
+router.get("/:username",(req,res,next)=>{
+    const UN = req.params.username;
 
-    User.findById(id)
+    User.find({username:UN})
     .exec()
     .then(doc=>{
 
@@ -296,7 +314,7 @@ router.get("/:userId",(req,res,next)=>{
         }
         else
         {
-            res.status(404).json({ message: "No valid entry found for provided ID" });
+            res.status(404).json({ message: "No valid entry found for provided username" });
 
         }
      
@@ -336,9 +354,9 @@ router.get("/:userId",(req,res,next)=>{
 
 
 
-    router.delete("/:userId", (req, res, next) => {
-        const id = req.params.userId;
-        User.remove({ _id:id })
+    router.delete("/:username", (req, res, next) => {
+        const UN = req.params.username;
+        User.remove({ username:UN })
           .exec()
           .then(result => {
             res.status(200).json(result);
@@ -362,13 +380,13 @@ router.get("/:userId",(req,res,next)=>{
 
 // to make updates in the users that are in the database
 
-      router.patch("/:userId",checkAuth, (req, res, next) => {
-        const id = req.params.userId;
+      router.patch("/:username",checkAuth, (req, res, next) => {
+        const UN = req.params.username;
         const updateOps = {}; //will contain the updated data
         for (const ops of req.body) {
           updateOps[ops.propName] = ops.value;
         }
-        User.update({ _id:id }, { $set: updateOps })
+        User.update({ username:UN }, { $set: updateOps })
           .exec()
           .then(result => {
             console.log(result);
