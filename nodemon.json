@@ -3,8 +3,8 @@
     "env":{
 
 
-        "MONGO_ATLAS_PW":"ath2988d"
-
+        "MONGO_ATLAS_PW":"ath2988d",
+        "JWT_KEY": "ahmedtarek"
 
 
 
