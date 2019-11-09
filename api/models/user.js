@@ -5,7 +5,8 @@ const userSchema = mongoose.Schema({
 
 
     _id:mongoose.Schema.Types.ObjectId,
-    username:{type:String,unique : true, required : true},
+    username:{type:String,unique : true, required : true, match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+},
     email:{type:String, required : true},
     password:{type:String, required : true},
     firstName:{type:String, required : true},
