@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const checkAuth = require('../middleware/check-auth');
 
 const fileFilter = (req, file, cb) => {
     // reject a file
@@ -362,7 +362,7 @@ router.get("/:userId",(req,res,next)=>{
 
 // to make updates in the users that are in the database
 
-      router.patch("/:userId", (req, res, next) => {
+      router.patch("/:userId",checkAuth, (req, res, next) => {
         const id = req.params.userId;
         const updateOps = {}; //will contain the updated data
         for (const ops of req.body) {
