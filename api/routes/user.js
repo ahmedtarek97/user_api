@@ -108,94 +108,126 @@ error:err
 
 router.post("/",upload.single('avatar'),(req,res,next)=>{
 console.log(req.file)
-    
+    //check if email already exist
+User.find({email:req.body.email}).exec()
+.then(user =>{
 
 
-bcrypt.hash(req.body.password,10,(err,hash)=>{
-
-    if(err){
-
-        return res.status(500).json({
+    if(user.length>=1)
+    {
+    return res.status(409).json({
 
 
-            error:err
+        message:'Email already exists in database'
 
 
 
+    })
+
+
+
+    }
+    else{
+
+
+        bcrypt.hash(req.body.password,10,(err,hash)=>{
+
+            if(err){
+        
+                return res.status(500).json({
+        
+        
+                    error:err
+        
+        
+        
+                })
+        
+        
+        
+        
+            }else{
+        
+        
+        
+        
+                
+        
+            const user = new User({
+        
+                _id:new mongoose.Types.ObjectId(),
+                username:req.body.username,
+                email:req.body.email,
+                password: hash,
+                firstName:req.body.firstName,
+                lastName:req.body.lastName,
+                avatar:req.file.path
+            
+        
+        
+            });
+        
+            user.save().then(result =>
+                {
+        
+                    console.log(result);
+        
+                    res.status(201).json({
+            
+            
+                message:'Added a user successfully',
+                createdUser:user
+            
+            
+            
+            
+            });
+            
+        
+        
+        
+        
+                })
+                   .catch(err => {console.log(err)
+                
+                res.status(500).json({
+        
+                    error:err
+        
+        
+        
+                })
+                
+                
+                
+                
+                } );
+        
+        
+        
+        
+        
+        
+                
+            }
+        
+        
+        
         })
-
-
-
-
-    }else{
-
-
-
-
-        
-
-    const user = new User({
-
-        _id:new mongoose.Types.ObjectId(),
-        username:req.body.username,
-        email:req.body.email,
-        password: hash,
-        firstName:req.body.firstName,
-        lastName:req.body.lastName,
-        avatar:req.file.path
-    
-
-
-    });
-
-    user.save().then(result =>
-        {
-
-            console.log(result);
-
-            res.status(201).json({
-    
-    
-        message:'Added a user successfully',
-        createdUser:user
-    
-    
-    
-    
-    });
-    
-
-
-
-
-        })
-           .catch(err => {console.log(err)
-        
-        res.status(500).json({
-
-            error:err
-
-
-
-        })
         
         
         
-        
-        } );
 
 
-
-
-
-
-        
     }
 
 
 
-})
+}
 
+
+
+);
 
 
 
