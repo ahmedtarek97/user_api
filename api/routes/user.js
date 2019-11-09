@@ -3,6 +3,17 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
 
+
+const fileFilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype === 'image/jpeg'||file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
+      cb(null, true);
+    } else {
+      cb(new Error('Wrong file type'), false);
+    }
+  };
+
+
 const storage = multer.diskStorage({
     destination:function(req, file, cb) {
       cb(null, './uploads/');
@@ -12,13 +23,13 @@ const storage = multer.diskStorage({
     }
   });
 
-
-
   const upload = multer({
-    storage:storage
-    
+    storage: storage,
+    limits: {
+      fileSize: 1024 * 300
+    },
+    fileFilter: fileFilter
   });
-
 const User = require('../models/user');
 //to handle the get requests
 router.get("/",(req,res,next)=>{
@@ -106,7 +117,7 @@ console.log(req.file)
         password:req.body.password,
         firstName:req.body.firstName,
         lastName:req.body.lastName,
-        avatar:req.body.avatar
+        avatar:req.file.path
     
 
 

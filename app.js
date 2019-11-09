@@ -15,6 +15,7 @@ mongoose.connect('mongodb+srv://rest_api_user:'+process.env.MONGO_ATLAS_PW+'@clu
 });
 
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'));
 //extract data from the body of the requst and makes it easily readable
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
