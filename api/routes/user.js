@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
-
+const bcrypt = require("bcrypt");
 
 const fileFilter = (req, file, cb) => {
     // reject a file
@@ -109,12 +109,37 @@ error:err
 router.post("/",upload.single('avatar'),(req,res,next)=>{
 console.log(req.file)
     
+
+
+bcrypt.hash(req.body.password,10,(err,hash)=>{
+
+    if(err){
+
+        return res.status(500).json({
+
+
+            error:err
+
+
+
+        })
+
+
+
+
+    }else{
+
+
+
+
+        
+
     const user = new User({
 
         _id:new mongoose.Types.ObjectId(),
         username:req.body.username,
         email:req.body.email,
-        password:req.body.password,
+        password: hash,
         firstName:req.body.firstName,
         lastName:req.body.lastName,
         avatar:req.file.path
@@ -158,6 +183,26 @@ console.log(req.file)
         
         
         } );
+
+
+
+
+
+
+        
+    }
+
+
+
+})
+
+
+
+
+
+
+
+
 
 
     
