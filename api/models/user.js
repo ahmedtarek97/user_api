@@ -13,13 +13,6 @@ const userSchema = mongoose.Schema({
     firstName:{type:String, required : [true, "can't be blank"]},
     lastName:{type:String, required : [true, "can't be blank"]},
     avatar:{type:String}
-
-
-
-
-
-
-
 });
 
 module.exports=mongoose.model('User',userSchema);
