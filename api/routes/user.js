@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const checkAuth = require('../middleware/check-auth');
 const uuidv4 =require('uuid/v4');
+
 const fileFilter = (req, file, cb) => {
     // reject a file
     if (file.mimetype === 'image/jpeg'||file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
@@ -54,14 +55,10 @@ User.find()
             });
 
 
-        }
-      
-
-
+        }   
 
     })
 .catch(err=>{
-
 
     console.log(err);
 
@@ -69,44 +66,14 @@ res.status(500).json({
 
 error:err
 
-
-
 });
 
-
 });
-
-
-
-
-
 }
-
-
-
-
-
-
 )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //to handle post requsts
-
 
 router.post("/",upload.single('avatar'),(req,res,next)=>{
 console.log(req.file)
@@ -119,11 +86,7 @@ if(pass.length<6)
 
         message:'short password'
 
-
-
     })
-
-
 
 }
 
@@ -137,164 +100,65 @@ User.find({email:req.body.email}).exec()
     {
     return res.status(409).json({
 
-
         message:'Email already exists in database'
 
-
-
     })
-
-
 
     }
     else{
 
-
         bcrypt.hash(req.body.password,10,(err,hash)=>{
 
-            if(err){
-        
-                return res.status(500).json({
-        
-        
-                    error:err
-        
-        
-        
-                })
-        
-        
-        
-        
+            if(err){        
+                return res.status(500).json({  
+                    error:err    
+                })     
+   
             }else{
         
-        
-        
-        
-                
-        
-            const user = new User({
-        
+            const user = new User({        
                 _id:uuidv4() ,
                 username:req.body.username,
                 email:req.body.email,
                 password: hash,
                 firstName:req.body.firstName,
                 lastName:req.body.lastName,
-                avatar:req.file.path
-            
-        
-        
-            });
+                avatar:req.file.path           
+           });
         
             user.save().then(result =>
-                {
-        
-                    console.log(result);
-        
-                    res.status(201).json({
-            
+                {        
+                    console.log(result);        
+                    res.status(201).json({           
             
                 message:'Added a user successfully',
-                createdUser:user
-            
-            
-            
-            
-            });
-            
-        
-        
-        
-        
+                createdUser:user          
+             });          
                 })
                    .catch(err => {console.log(err)
                 
                 res.status(500).json({
         
-                    error:err
+                    error:err       
         
         
-        
-                })
+                })                
+                               
                 
-                
-                
-                
-                } );
-        
-        
-        
-        
-        
-        
-                
+                } );      
             }
+       })
         
-        
-        
-        })
-        
-        
-        
-
-
-    }
-
-
+     }
 
 }
 
-
-
-);
-
-
-
-
-
-
-
-
-
+);         
     
     
-    
-    
-    
-    
-    }
-    
-    
-    
-    
-    
-    
+    } 
+     
     );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //to handle the get requests with a specific id
 router.get("/:username",(req,res,next)=>{
@@ -308,7 +172,6 @@ router.get("/:username",(req,res,next)=>{
         if(doc){
 
             res.status(200).json(doc);
-
 
 
         }
@@ -327,33 +190,16 @@ router.get("/:username",(req,res,next)=>{
     res.status(500).json({error:err});
     
     
-    });
-
-   
-    
-    
+    }); 
     
     
     }
     
     
     
-    
-    
-    
     );
     
     
-
-
-
-
-
-
-
-
-
-
     router.delete("/:username", (req, res, next) => {
         const UN = req.params.username;
         User.remove({ username:UN })
@@ -368,13 +214,6 @@ router.get("/:username",(req,res,next)=>{
             });
           });
       });
-
-
-
-
-
-
-
 
 
 
@@ -399,19 +238,6 @@ router.get("/:username",(req,res,next)=>{
             });
           });
       });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -458,20 +284,6 @@ router.get("/:username",(req,res,next)=>{
             });
           });
       });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
